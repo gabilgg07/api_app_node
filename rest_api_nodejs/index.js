@@ -3,6 +3,9 @@ const express = require("express");
 const cors = require("cors");
 const _ = require("lodash");
 const { v4: uuid } = require("uuid");
+// const u = require("./data/users/users.json");
+// import users from "./data/users/users.json" --> bu sekilde yaza bilmek ucun:
+// package.json - da "type":"module" yazmaliyiq.
 
 const getusers = async () => {
   let usrs = [];
@@ -20,6 +23,9 @@ const getusers = async () => {
 
 const app = express();
 app.use(express.json());
+app.use(cors());
+
+const PORT = 5005;
 
 getusers()
   .then((users) => {
@@ -29,6 +35,20 @@ getusers()
 
     app.get("/users/:id", async (req, res) => {
       const id = req.params.id;
+
+      let user;
+
+      user = users.find((u) => u.id === id);
+
+      console.log(user);
+
+      if (!user) {
+        return res.status(404).json({
+          message: "İstifadəçi tapılmadı!",
+        });
+      }
+
+      res.json(user);
     });
 
     app.post("/users", async (req, res) => {
@@ -75,6 +95,10 @@ getusers()
   .catch((err) => {
     console.log(err);
   });
+
+app.listen(PORT, () =>
+  console.log(`Server running on port: http://localhost:${PORT}`)
+);
 
 function addZero(x, n) {
   while (x.toString().length < n) {
