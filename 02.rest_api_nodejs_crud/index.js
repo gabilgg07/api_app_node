@@ -24,7 +24,8 @@ app.get("/", (req, res) => res.send("Hello from Home Page."));
 //   console.log(error, ">>e>>");
 // }
 
-mongoose.connect(process.env.DB_CONNECTION);
+// mongoose.connect(process.env.DB_CONNECTION);
+mongoose.connect(process.env.DB_CONNECTION_LOCAL);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error: "));
 db.once("open", function () {

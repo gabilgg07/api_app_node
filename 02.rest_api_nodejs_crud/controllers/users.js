@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
 import User from "../models/User.js";
 
@@ -10,6 +10,53 @@ try {
   fs.mkdirSync("data", { recursive: true });
   fs.writeFileSync("data/users.json", JSON.stringify([]));
 }
+
+const addDbUser = async (u) => {
+  const user = new User({
+    username: u.username,
+    email: u.email,
+    password: u.password,
+  });
+
+  try {
+    const savedUser = await user.save();
+
+    // store the document in a variable
+    let doc = await User.findOne({ _id: savedUser._id });
+
+    // set a new _id on the document
+    doc._id = u._id;
+
+    // insert the document, using the new _id
+    const iU = await User.insertMany(doc);
+
+    // remove the document with the old _id
+    const rU = await User.findByIdAndRemove({ _id: savedUser._id });
+
+    console.log(`${savedUser.username} adlı istifadəçi elave edildi`);
+  } catch (error) {
+    console.log(error, ">>>olmadi");
+  }
+};
+
+const getUsersFromDb = async () => {
+  try {
+    const db = await User.find();
+
+    if (users.length > 0) {
+      users.forEach((u) => {
+        if (!db.some((user) => user._id.toString() === u._id)) {
+          addDbUser(u);
+        }
+      });
+    }
+  } catch (error) {
+    console.log("<->error<->");
+    console.log(error, "\n");
+  }
+};
+
+getUsersFromDb();
 
 export const getUsersAll = async (req, res) => {
   try {
