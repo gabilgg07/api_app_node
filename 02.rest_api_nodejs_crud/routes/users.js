@@ -8,11 +8,13 @@ import {
   deleteUser,
 } from "../controllers/users.js";
 
+import verify from "../verifyToken.js";
+
 const router = express.Router();
 
 // all routes in here are starting with /users
 
-router.get("/all", getUsersAll);
+router.get("/all", verify, getUsersAll);
 
 router.get("/", getUsers);
 

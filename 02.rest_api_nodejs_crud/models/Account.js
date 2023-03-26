@@ -1,21 +1,27 @@
 import mongoose from "mongoose";
 
-const UserSchema = new mongoose.Schema({
+const AccountSchema = new mongoose.Schema({
   _id: {
     type: mongoose.Types.ObjectId,
     default: new mongoose.Types.ObjectId(),
   },
-  username: {
+  name: {
     type: String,
     required: true,
+    min: 3,
+    max: 255,
   },
   email: {
     type: String,
     required: true,
+    min: 6,
+    max: 255,
   },
   password: {
     type: String,
     required: true,
+    min: 6,
+    max: 1024,
   },
   createdDate: {
     type: Date,
@@ -31,6 +37,6 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-const User = mongoose.model("Users", UserSchema);
+const Account = mongoose.model("Accounts", AccountSchema);
 
-export default User;
+export default Account;
