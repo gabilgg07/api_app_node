@@ -27,6 +27,10 @@ const AccountSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
   deletedDate: {
     type: Date,
     default: null,

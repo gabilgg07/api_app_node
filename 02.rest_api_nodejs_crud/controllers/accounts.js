@@ -15,6 +15,18 @@ try {
   fs.writeFileSync("data/accounts.json", JSON.stringify([]));
 }
 
+// var SpeechRecognition = SpeechRecognition || SpeechRecognition;
+// var SpeechGrammarList = SpeechGrammarList || Window.webkitSpeechGrammarList;
+// var SpeechRecognitionEvent = SpeechRecognitionEvent || SpeechRecognitionEvent;
+
+// const synth = window.speechSynthesis;
+
+// console.log(SpeechRecognition);
+// console.log(SpeechGrammarList);
+// console.log(SpeechRecognitionEvent);
+
+//console.log(synth);
+
 const addDbAccount = async (account) => {
   const accountForDb = new Account({
     _id: account._id,
@@ -74,6 +86,18 @@ const modifiedFoundAccount = async (acnt, isFromDb) => {
 const getAccountsForDb = async () => {
   try {
     const db = await Account.find();
+
+    // console.log(Object.keys(db[0].toObject()));
+    // const updateM = await Account.updateMany({}, { isAdmin: false });
+    // console.log(updateM);
+
+    // if (accounts && accounts.length > 0) {
+    //   if (!Object.keys(accounts[0]).includes("isAdmin")) {
+    //     accounts = accounts.map((item) => (item = { ...item, isAdmin: false }));
+    //     console.log(accounts);
+    //     fs.writeFileSync(`data/accounts.json`, JSON.stringify(accounts));
+    //   }
+    // }
 
     if (accounts.length > 0) {
       accounts.forEach((acnt) => {
@@ -147,11 +171,13 @@ export const getAccount = async (req, res) => {
 
     if (!account || account.deletedDate !== null) {
       return res.status(404).json({
-        message: "İstifadəçi tapılmadı!",
+        message: "Account not found!",
       });
     }
+
     res.send(account);
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: err });
   }
 };
